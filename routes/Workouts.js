@@ -5,6 +5,7 @@ const { Workouts, Exercises, WorkoutExercises, sequelize, PersonalBests } = requ
 const {validateToken} = require("../middleware/authMiddleware");
 
 
+//Get all workouts
 router.get("/", validateToken, async (req,res)=>{
     let workoutList = await Workouts.findAll({
         order: [
@@ -26,13 +27,13 @@ router.get("/", validateToken, async (req,res)=>{
     res.json(workoutList);
 });
 
+//Get all exercises from a workout
 router.get("/byId/:id", async(req,res)=>{
     const id = req.params.id;
     const workout = await Workouts.findByPk(id);
     const exercises = await sequelize.query(`SELECT WorkoutExercises.id,WorkoutExercises.workoutId,workoutexercises.exerciseId,exercises.title,workoutexercises.weight, workoutexercises.repetitions from workoutexercises JOIN exercises on exercises.id =workoutexercises.exerciseId where projectdb.workoutexercises.workoutId = ${id}`,
     {type: sequelize.QueryTypes.SELECT}
     );
-    //const exercises = await workout.getExercises();
     res.json({exercises:exercises,workout:workout});
 });
 
@@ -70,6 +71,7 @@ router.delete("/:id", validateToken, async(req, res)=> {
     res.json(workouts);
 })
 
+//Update workout status to completed
 router.put("/byId/:id", async (req,res)=>{
     const id = req.params.id;
     const workout = await Workouts.findByPk(id);
@@ -80,7 +82,7 @@ router.put("/byId/:id", async (req,res)=>{
     res.json("Saved succesfully.");
 })
 
-//Post workout to db.
+//Post workout to the database
 router.post("/", validateToken, async (req, res)=>{
     const workout = req.body;
     const user = req.user.username;
@@ -172,21 +174,6 @@ router.delete("/byId/:id/:workoutId", validateToken, async (req, res)=>{
     })
     if(deletedExercise){
         deleteOrUpdatePersonalBest(user,exerciseId);
-        // const maxLift = await calculatePersonalBest(user, exerciseId);
-        // let personalBest = await PersonalBests.findOne({
-        //     where: {
-        //         userId: user,
-        //         exerciseId: exerciseId
-        //     }
-        // });
-        // if(maxLift == 0){
-        //     personalBest.destroy();
-        // }
-        // else{
-        //     personalBest.personalBest = maxLift;
-        //     personalBest.save();
-        // }
-        
         const exercises = await sequelize.query(`SELECT WorkoutExercises.id,WorkoutExercises.workoutId,workoutexercises.exerciseId,exercises.title,workoutexercises.weight, workoutexercises.repetitions from workoutexercises JOIN exercises on exercises.id =workoutexercises.exerciseId where projectdb.workoutexercises.workoutId = ${workoutId} ORDER BY workoutexercises.createdAt ASC`,
         {type: sequelize.QueryTypes.SELECT}
         );

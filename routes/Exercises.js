@@ -38,10 +38,8 @@ router.post("/", async (req, res)=>{
         res.json(exercise);
     }
     else{
-        //console.log("The exercise already exists");
         res.send('Duplicate');
     }
-    
 });
 
 
