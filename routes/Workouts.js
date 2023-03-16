@@ -149,12 +149,14 @@ async function deleteOrUpdatePersonalBest(userId, exerciseId){
                 exerciseId: exerciseId
             }
         });
-        if(maxLift == 0){
-            personalBest.destroy();
-        }
-        else{
-            personalBest.personalBest = maxLift;
-            personalBest.save();
+        if(personalBest){
+            if(maxLift == 0){
+                personalBest.destroy();
+            }
+            else{
+                personalBest.personalBest = maxLift;
+                personalBest.save();
+            }
         }
 }
 
