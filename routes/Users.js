@@ -2,11 +2,27 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const db = require('../models');
-const { Users } = require('../models');
+const { Users, Workouts } = require('../models');
 const { sign } = require('jsonwebtoken');
 const { validateToken } = require('../middleware/authMiddleware');
 
 
+
+router.get("/profile", validateToken, async(req,res)=>{
+    const id = req.user.id;
+    const completedWorkouts = await Workouts.findAll({where: {
+        username : req.user.username,
+        status: 1 
+    }});
+    const user = await Users.findAll({where: {
+        id : id
+    }});
+
+    if(user) {
+        res.json({user:user,completedWorkouts:completedWorkouts.length});
+    }
+
+});
 
 //Add user to db
 router.post('/register', async (req, res) => {
