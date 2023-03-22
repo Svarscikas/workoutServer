@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const db = require('../models');
-const { Users, Workouts } = require('../models');
+const { Users, Workouts, WorkoutExercises } = require('../models');
 const { sign } = require('jsonwebtoken');
 const { validateToken } = require('../middleware/authMiddleware');
 
@@ -10,6 +10,9 @@ const { validateToken } = require('../middleware/authMiddleware');
 
 router.get("/profile", validateToken, async(req,res)=>{
     const id = req.user.id;
+    const totalExercises = await WorkoutExercises.findAll({where:{
+        userId: id
+    }});
     const completedWorkouts = await Workouts.findAll({where: {
         username : req.user.username,
         status: 1 
@@ -19,7 +22,7 @@ router.get("/profile", validateToken, async(req,res)=>{
     }});
 
     if(user) {
-        res.json({user:user,completedWorkouts:completedWorkouts.length});
+        res.json({user:user,completedWorkouts:completedWorkouts.length,totalExercises:totalExercises.length});
     }
 
 });
