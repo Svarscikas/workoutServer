@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Exercises, PersonalBests, sequelize } = require('../models');
-
+const { validateToken } = require('../middleware/authMiddleware');
 
 
 router.get("/personalbests", async (req, res)=>{
@@ -16,7 +16,8 @@ router.get("/personalbests", async (req, res)=>{
 });
 
 
-router.get("/", async (req,res)=>{
+router.get("/", validateToken ,async (req,res)=>{
+    const user = req.user.id;
     let exerciseList = await Exercises.findAll(
         {
             raw: true,
@@ -25,7 +26,8 @@ router.get("/", async (req,res)=>{
     for(let i = 0; i < exerciseList.length; i++){
         const pb = await PersonalBests.findOne({
             where : {
-                exerciseId : exerciseList[i].id
+                exerciseId : exerciseList[i].id,
+                userId: user
             }
         });
         if(pb){
