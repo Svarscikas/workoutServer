@@ -1,6 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const { Exercises, PersonalBests } = require('../models');
+const { Exercises, PersonalBests, sequelize } = require('../models');
+
+
+
+router.get("/personalbests", async (req, res)=>{
+    const bestLifts = await sequelize.query('SELECT users.username, exercises.title as exercise, personalBests.personalBest as weight FROM personalBests JOIN ( SELECT exerciseId, MAX(personalbests.personalBest) AS maxWeight FROM personalBests GROUP BY exerciseId) AS pb_max ON personalBests.exerciseId = pb_max.exerciseId AND personalBests.personalbest = pb_max.maxWeight JOIN users ON personalBests.userId = users.Id JOIN exercises ON personalBests.exerciseId = exercises.Id',
+    {type: sequelize.QueryTypes.SELECT});
+    if(bestLifts) {
+        res.json(bestLifts);
+    }
+    else {
+        res.json("Failed to get info");
+    }
+});
+
 
 router.get("/", async (req,res)=>{
     let exerciseList = await Exercises.findAll(
