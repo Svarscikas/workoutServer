@@ -7,7 +7,18 @@ const { sign } = require('jsonwebtoken');
 const { validateToken } = require('../middleware/authMiddleware');
 
 
-
+router.get("/myprofile", validateToken, async(req, res)=> {
+    const id = req.user.id;
+    const user = await Users.findAll({where: {
+        id : id
+    }});
+    if(user){
+        res.json(user);
+    }
+    else{
+        res.json("user not found");
+    }
+})
 router.get("/profile", validateToken, async(req,res)=>{
     const id = req.user.id;
     const totalExercises = await WorkoutExercises.findAll({where:{

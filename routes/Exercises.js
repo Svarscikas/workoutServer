@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Exercises, PersonalBests, sequelize } = require('../models');
+const { Exercises, PersonalBests, Users, sequelize } = require('../models');
 const { validateToken } = require('../middleware/authMiddleware');
 
 
@@ -17,7 +17,7 @@ router.get("/personalbests", async (req, res)=>{
 
 
 router.get("/", validateToken ,async (req,res)=>{
-    const user = req.user.id;
+    const id = req.user.id;
     let exerciseList = await Exercises.findAll(
         {
             raw: true,
@@ -27,7 +27,7 @@ router.get("/", validateToken ,async (req,res)=>{
         const pb = await PersonalBests.findOne({
             where : {
                 exerciseId : exerciseList[i].id,
-                userId: user
+                userId: id
             }
         });
         if(pb){
@@ -37,7 +37,10 @@ router.get("/", validateToken ,async (req,res)=>{
             exerciseList[i]["personalBest"] = "No data provided";
         }
     }
-    res.json(exerciseList);
+    const user = await Users.findAll({where: {
+        id : id
+    }});
+    res.json({exerciseList:exerciseList,user:user[0].isAdmin});
 });
 
 router.get("/byId/:id", async(req,res)=>{
