@@ -8,7 +8,7 @@ app.use(cors());
 const db = require('./models');
 
 //Port number for Backend server
-const port = 3001;
+const port = 3003;
 
 app.use("/public", express.static(path.join(__dirname, 'public')));
 
