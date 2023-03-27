@@ -19,6 +19,38 @@ router.get("/myprofile", validateToken, async(req, res)=> {
         res.json("user not found");
     }
 })
+router.put("/updateProfile", validateToken, async(req, res)=> {
+    const {age, weight, height} = req.body;
+    const id = req.user.id;
+    const user = await Users.findAll({where: {
+        id : id,
+    }});
+    let changes = false;
+    if(user[0]) {
+        if(age) {
+            user[0].age = age;
+            changes = true;
+        }
+        if(weight) {
+            user[0].weight = weight;
+            changes = true;
+        }
+        if(height) {
+            user[0].height = height
+            changes = true;
+        }
+        if(changes == true) {
+            await user[0].save();
+            res.json(user);
+        }
+        if(changes == false) {
+            res.json("User exists, no updates made");
+        }
+    }
+    else {
+        res.json("User does not exist");
+    }
+})
 router.get("/profile", validateToken, async(req,res)=>{
     const id = req.user.id;
     const totalExercises = await WorkoutExercises.findAll({where:{
