@@ -44,7 +44,7 @@ router.put("/updateProfile", validateToken, async(req, res)=> {
             res.json(user);
         }
         if(changes == false) {
-            res.json("User exists, no updates made");
+            res.json({errors: "User exists, no updates made"});
         }
     }
     else {
