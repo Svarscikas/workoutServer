@@ -118,7 +118,7 @@ router.post("/byId/:id" , validateToken, async(req,res)=>{
         await currentPb.save();
     }
     await WorkoutExercises.create({userId: userId,exerciseId: req.body.exercise, workoutId: id, weight :req.body.weight, repetitions:req.body.repetitions})
-    const exercises = await sequelize.query(`SELECT WorkoutExercises.id,WorkoutExercises.workoutId,workoutexercises.exerciseId,exercises.title,workoutexercises.weight, workoutexercises.repetitions from workoutexercises JOIN exercises on exercises.id =workoutexercises.exerciseId where projectdb.workoutexercises.workoutId = ${id} ORDER BY workoutexercises.createdAt ASC`,
+    const exercises = await sequelize.query(`SELECT WorkoutExercises.id,WorkoutExercises.workoutId,workoutexercises.exerciseId,exercises.title,workoutexercises.weight, workoutexercises.repetitions from workoutexercises JOIN exercises on exercises.id =workoutexercises.exerciseId where workoutexercises.workoutId = ${id} ORDER BY workoutexercises.createdAt ASC`,
     {type: sequelize.QueryTypes.SELECT}
     );
     res.json(exercises); 
