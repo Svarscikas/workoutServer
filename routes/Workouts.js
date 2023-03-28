@@ -31,7 +31,7 @@ router.get("/", validateToken, async (req,res)=>{
 router.get("/byId/:id", async(req,res)=>{
     const id = req.params.id;
     const workout = await Workouts.findByPk(id);
-    const exercises = await sequelize.query(`SELECT WorkoutExercises.id,WorkoutExercises.workoutId,workoutexercises.exerciseId,exercises.title,workoutexercises.weight, workoutexercises.repetitions from workoutexercises JOIN exercises on exercises.id =workoutexercises.exerciseId where projectdb.workoutexercises.workoutId = ${id}`,
+    const exercises = await sequelize.query(`SELECT WorkoutExercises.id,WorkoutExercises.workoutId,workoutexercises.exerciseId,exercises.title,workoutexercises.weight, workoutexercises.repetitions from workoutexercises JOIN exercises on exercises.id =workoutexercises.exerciseId where workoutexercises.workoutId = ${id}`,
     {type: sequelize.QueryTypes.SELECT}
     );
     res.json({exercises:exercises,workout:workout});
