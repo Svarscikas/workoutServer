@@ -1,9 +1,11 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+require("dotenv").config();
 var path = require('path');
 app.use(express.json());
 app.use(cors());
+
 
 const db = require('./models');
 
@@ -20,10 +22,14 @@ app.use("/workouts", workoutRouter);
 const userRouter = require('./routes/Users');
 app.use("/users", userRouter);
 
-db.sequelize.sync().then(()=> {
-    app.listen(port,() => {
+db.sequelize
+.sync()
+.then(()=> {
+    app.listen(process.env.PORT || 3003,() => {
         console.log('Server running on PORT:'+ port);
     });
+}).catch((err) => {
+    console.log(err);
 });
 
 
