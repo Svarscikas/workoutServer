@@ -1,9 +1,9 @@
 {
     "development": {
-      "username": "root",
-      "password": "root",
-      "database": "projectdb",
-      "host": "mysqlserver",
+      "username": "b041f9aadc1868",
+      "password": "69ba2418",
+      "database": "heroku_ee883dea12f88d1",
+      "host": "eu-cdbr-west-03.cleardb.net",
       "dialect": "mysql",
       "port": "3306"
     },
