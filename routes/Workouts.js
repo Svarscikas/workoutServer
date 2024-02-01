@@ -34,8 +34,9 @@ router.get("/", validateToken, async (req, res) => {
 router.get("/byId/:id", async (req, res) => {
   const id = req.params.id;
   const workout = await Workouts.findByPk(id);
+  let exercises;
   try {
-    const exercises = await sequelize.query(
+    exercises = await sequelize.query(
       // Your SQL query here
       `SELECT WorkoutExercises.id,WorkoutExercises.workoutId,WorkoutExercises.exerciseId,exercises.title,WorkoutExercises.weight, WorkoutExercises.repetitions from WorkoutExercises JOIN exercises on exercises.id =WorkoutExercises.exerciseId where WorkoutExercises.workoutId = ${id}`,
       { type: sequelize.QueryTypes.SELECT }
