@@ -38,7 +38,7 @@ router.get("/byId/:id", async (req, res) => {
   try {
     exercises = await sequelize.query(
       // Your SQL query here
-      `SELECT WorkoutExercises.id,WorkoutExercises.workoutId,WorkoutExercises.exerciseId,exercises.title,WorkoutExercises.weight, WorkoutExercises.repetitions from WorkoutExercises JOIN exercises on exercises.id =WorkoutExercises.exerciseId where WorkoutExercises.workoutId = ${id}`,
+      `SELECT WorkoutExercises.id,WorkoutExercises.workoutId,WorkoutExercises.exerciseId,Exercises.title,WorkoutExercises.weight, WorkoutExercises.repetitions from WorkoutExercises JOIN Exercises on Exercises.id = WorkoutExercises.exerciseId where WorkoutExercises.workoutId = ${id}`,
       { type: sequelize.QueryTypes.SELECT }
     );
     // Rest of the code
@@ -135,7 +135,7 @@ router.post("/byId/:id", validateToken, async (req, res) => {
     repetitions: req.body.repetitions,
   });
   const exercises = await sequelize.query(
-    `SELECT WorkoutExercises.id,WorkoutExercises.workoutId,workoutexercises.exerciseId,exercises.title,workoutexercises.weight, workoutexercises.repetitions from workoutexercises JOIN exercises on exercises.id =workoutexercises.exerciseId where workoutexercises.workoutId = ${id} ORDER BY workoutexercises.createdAt ASC`,
+    `SELECT WorkoutExercises.id,WorkoutExercises.workoutId,WorkoutExercises.exerciseId,Exercises.title,WorkoutExercises.weight, WorkoutExercises.repetitions from WorkoutExercises JOIN Exercises on Exercises.id =WorkoutExercises.exerciseId where WorkoutExercises.workoutId = ${id} ORDER BY WorkoutExercises.createdAt ASC`,
     { type: sequelize.QueryTypes.SELECT }
   );
   res.json(exercises);
@@ -188,7 +188,7 @@ router.delete("/byId/:id/:workoutId", validateToken, async (req, res) => {
   if (deletedExercise) {
     deleteOrUpdatePersonalBest(user, exerciseId);
     const exercises = await sequelize.query(
-      `SELECT WorkoutExercises.id,WorkoutExercises.workoutId,workoutexercises.exerciseId,exercises.title,workoutexercises.weight, workoutexercises.repetitions from workoutexercises JOIN exercises on exercises.id =workoutexercises.exerciseId where projectdb.workoutexercises.workoutId = ${workoutId} ORDER BY workoutexercises.createdAt ASC`,
+      `SELECT WorkoutExercises.id,WorkoutExercises.workoutId,WorkoutExercises.exerciseId,Exercises.title,WorkoutExercises.weight, WorkoutExercises.repetitions from WorkoutExercises JOIN Exercises on Exercises.id = WorkoutExercises.exerciseId where whatever.WorkoutExercises.workoutId = ${workoutId} ORDER BY WorkoutExercises.createdAt ASC`,
       { type: sequelize.QueryTypes.SELECT }
     );
     res.json(exercises);
