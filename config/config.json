@@ -1,24 +1,24 @@
 {
-    "development": {
-      "username": "b041f9aadc1868",
-      "password": "69ba2418",
-      "database": "heroku_ee883dea12f88d1",
-      "host": "eu-cdbr-west-03.cleardb.net",
-      "dialect": "mysql",
-      "port": "3306"
-    },
-    "test": {
-      "username": "b041f9aadc1868",
-      "password": "69ba2418",
-      "database": "heroku_ee883dea12f88d1",
-      "host": "eu-cdbr-west-03.cleardb.net",
-      "dialect": "mysql"
-    },
-    "production": {
-      "username": "b041f9aadc1868",
-      "password": "69ba2418",
-      "database": "heroku_ee883dea12f88d1",
-      "host": "eu-cdbr-west-03.cleardb.net",
-      "dialect": "mysql"
-    }
+  "development": {
+    "username": "sql11681306",
+    "password": "Bag5qLPJrL",
+    "database": "sql11681306",
+    "host": "sql11.freemysqlhosting.net",
+    "dialect": "mysql",
+    "port": "3306"
+  },
+  "test": {
+    "username": "sql11681306",
+    "password": "Bag5qLPJrL",
+    "database": "sql11681306",
+    "host": "sql11.freemysqlhosting.net",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "sql11681306",
+    "password": "Bag5qLPJrL",
+    "database": "sql11681306",
+    "host": "sql11.freemysqlhosting.net",
+    "dialect": "mysql"
+  }
 }
