@@ -6,7 +6,7 @@ const { validateToken } = require("../middleware/authMiddleware");
 router.get("/personalbests", async (req, res) => {
   let bestLifts;
   try {
-    const bestLifts = await sequelize.query(
+    bestLifts = await sequelize.query(
       "SELECT Users.username, Exercises.title as exercise, PersonalBests.personalBest as weight FROM PersonalBests JOIN ( SELECT exerciseId, MAX(PersonalBests.personalBest) AS maxWeight FROM PersonalBests GROUP BY exerciseId) AS pb_max ON PersonalBests.exerciseId = pb_max.exerciseId AND PersonalBests.personalbest = pb_max.maxWeight JOIN Users ON PersonalBests.userId = Users.Id JOIN Exercises ON PersonalBests.exerciseId = Exercises.Id",
       { type: sequelize.QueryTypes.SELECT }
     );
