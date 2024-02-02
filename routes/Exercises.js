@@ -4,9 +4,10 @@ const { Exercises, PersonalBests, Users, sequelize } = require("../models");
 const { validateToken } = require("../middleware/authMiddleware");
 
 router.get("/personalbests", async (req, res) => {
+  let bestLifts;
   try {
     const bestLifts = await sequelize.query(
-      "SELECT users.username, Exercises.title as exercise, PersonalBests.personalBest as weight FROM PersonalBests JOIN ( SELECT exerciseId, MAX(PersonalBests.personalBest) AS maxWeight FROM PersonalBests GROUP BY exerciseId) AS pb_max ON PersonalBests.exerciseId = pb_max.exerciseId AND PersonalBests.personalbest = pb_max.maxWeight JOIN users ON PersonalBests.userId = users.Id JOIN Exercises ON PersonalBests.exerciseId = exercises.Id",
+      "SELECT Users.username, Exercises.title as exercise, PersonalBests.personalBest as weight FROM PersonalBests JOIN ( SELECT exerciseId, MAX(PersonalBests.personalBest) AS maxWeight FROM PersonalBests GROUP BY exerciseId) AS pb_max ON PersonalBests.exerciseId = pb_max.exerciseId AND PersonalBests.personalbest = pb_max.maxWeight JOIN Users ON PersonalBests.userId = Users.Id JOIN Exercises ON PersonalBests.exerciseId = exercises.Id",
       { type: sequelize.QueryTypes.SELECT }
     );
     // Rest of the code
